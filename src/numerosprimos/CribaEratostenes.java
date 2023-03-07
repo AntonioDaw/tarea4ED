@@ -21,11 +21,11 @@
 package numerosprimos;
 
 public class CribaEratostenes {
-    /*Cambio la variable dim por un atributo estatico para facilitar la modularización
+
+    /*Cambio la variable dim por un atributo estatico
     *le pongo un nombre mas largo pero mas claro
-    */
+     */
     static int dimension;
-    
 
     /**
      * Generar números primos de 1 a max
@@ -34,52 +34,55 @@ public class CribaEratostenes {
      * @return Vector de números primos
      */
     public static int[] generarPrimos(int max) {
-        
-        int i, j;
+
         // Declaraciones
-        CribaEratostenes.dimension = max + 1; // Tamaño del array 
+        // Tamaño del array 
+        CribaEratostenes.dimension = max + 1;
+        int indiceBoolean;//se usa para el boolean[]
+        int indexAux;//este indice se usa como apoyo
+        int indicePrimos;//Se usa para el Array final de numeros primos
+        int cantidadPrimos = 0;
+        int[] ArrayPrimos;//se usa para tener un solo return(es lo recomendable)
+        /* Inicializar el array  al ser el valor por defecto false, nos ahorramos
+            *algunas lineas de codigo iterando a partir de la posicion 2
+         */
         boolean[] esPrimo = new boolean[dimension];
+        for (indiceBoolean = 2; indiceBoolean < dimension; indiceBoolean++) {
+            esPrimo[indiceBoolean] = true;
+        }
+
         if (max >= 2) {
 
-            /* Inicializar el array  al ser el valor por defecto false, nos ahorramos
-            *algunas lineas de codigo iterando a partir de la posicion 2
-             */
-            for (i = 2; i < dimension; i++) {
-                esPrimo[i] = true;
-            }
-
             // Criba tambien podemos pasar directamente al dos
-            for (i = 2; i < Math.sqrt(dimension) + 1; i++) {
-                if (esPrimo[i]) {
-                    // Eliminar los múltiplos de i
-                    for (j = 2 * i; j < dimension; j += i) {
-                        esPrimo[j] = false;
+            for (indiceBoolean = 2; indiceBoolean <= Math.sqrt(dimension); indiceBoolean++) {
+                if (esPrimo[indiceBoolean]) {
+
+                    for (indexAux = 2 * indiceBoolean; indexAux < dimension; indexAux += indiceBoolean) {
+                        esPrimo[indexAux] = false;
                     }
                 }
             }
 
             // ¿Cuántos primos hay? 
-            int cuenta = 0;
-            for (i = 2; i < dimension; i++) {
-                if (esPrimo[i]) {
-                    cuenta++;
+            for (indiceBoolean = 2; indiceBoolean < dimension; indiceBoolean++) {
+                if (esPrimo[indiceBoolean]) {
+                    cantidadPrimos++;
                 }
             }
             // Rellenar el vector de números primos
-            int[] primos = new int[cuenta];
-            for (i = 0, j = 0; i < dimension; i++) {
-                if (esPrimo[i]) {
-                    primos[j++] = i;
+            int[] primos = new int[cantidadPrimos];
+            for (indiceBoolean = 0, indicePrimos = 0; indiceBoolean < dimension; indiceBoolean++) {
+                if (esPrimo[indiceBoolean]) {
+                    primos[indicePrimos++] = indiceBoolean;
                 }
             }
 
-            return primos;
+            ArrayPrimos = primos;
 
-        } else { // max < 2 
-
-            return new int[0]; // Vector vacío
+        } else { // max < 2
+            ArrayPrimos = new int[0]; // Vector vacío
         }
+        return ArrayPrimos;
     }
 
-    
 }
