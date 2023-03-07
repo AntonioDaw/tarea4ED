@@ -21,6 +21,11 @@
 package numerosprimos;
 
 public class CribaEratostenes {
+    /*Cambio la variable dim por un atributo estatico para facilitar la modularización
+    *le pongo un nombre mas largo pero mas claro
+    */
+    static int dimension;
+    
 
     /**
      * Generar números primos de 1 a max
@@ -29,26 +34,25 @@ public class CribaEratostenes {
      * @return Vector de números primos
      */
     public static int[] generarPrimos(int max) {
+        
         int i, j;
         // Declaraciones
-        int dim = max + 1; // Tamaño del array 
-        boolean[] esPrimo = new boolean[dim];
+        CribaEratostenes.dimension = max + 1; // Tamaño del array 
+        boolean[] esPrimo = new boolean[dimension];
         if (max >= 2) {
 
             /* Inicializar el array  al ser el valor por defecto false, nos ahorramos
             *algunas lineas de codigo iterando a partir de la posicion 2
-            */
-            for (i = 2; i < dim; i++) {
+             */
+            for (i = 2; i < dimension; i++) {
                 esPrimo[i] = true;
             }
 
-           
-
             // Criba tambien podemos pasar directamente al dos
-            for (i = 2; i < Math.sqrt(dim) + 1; i++) {
+            for (i = 2; i < Math.sqrt(dimension) + 1; i++) {
                 if (esPrimo[i]) {
                     // Eliminar los múltiplos de i
-                    for (j = 2 * i; j < dim; j += i) {
+                    for (j = 2 * i; j < dimension; j += i) {
                         esPrimo[j] = false;
                     }
                 }
@@ -56,14 +60,14 @@ public class CribaEratostenes {
 
             // ¿Cuántos primos hay? 
             int cuenta = 0;
-            for (i = 2; i < dim; i++) {
+            for (i = 2; i < dimension; i++) {
                 if (esPrimo[i]) {
                     cuenta++;
                 }
             }
             // Rellenar el vector de números primos
             int[] primos = new int[cuenta];
-            for (i = 0, j = 0; i < dim; i++) {
+            for (i = 0, j = 0; i < dimension; i++) {
                 if (esPrimo[i]) {
                     primos[j++] = i;
                 }
@@ -77,4 +81,5 @@ public class CribaEratostenes {
         }
     }
 
+    
 }
